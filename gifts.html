@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Gifts Await</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Playfair+Display:ital,wght@0,400;1,400&family=Montserrat:wght@200;300;400&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --ink: #2a1f14;
+            --ink-f: #5c4733;
+            --parch: #f2e8d5;
+            --parch2: #e8dbc2;
+            --parch3: #ddd0b3;
+            --gold: #a07830;
+            --gold2: #c8a050;
+            --gold-dim: rgba(160, 120, 48, 0.18);
+            --sepia: #8b6340;
+            --seal: #7a1c1c;
+            --dark: #0e0805;
+            --dark2: #181210;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--dark);
+            font-family: 'Montserrat', sans-serif;
+            color: var(--parch);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px 60px;
+            overflow-x: hidden;
+        }
+
+        #motes {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .mote {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(200, 160, 80, 0.18);
+            animation: moteFloat var(--md, 18s) ease-in-out var(--ml, 0s) infinite alternate;
+        }
+
+        @keyframes moteFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: .05;
+            }
+
+            50% {
+                opacity: var(--mo, .15);
+            }
+
+            100% {
+                transform: translate(var(--mx, 20px), var(--my, -30px)) scale(1.4);
+                opacity: .05;
+            }
+        }
+
+        .bg-glow {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 55% at 50% 50%, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* header */
+        .page-hdr {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            margin-bottom: 44px;
+            opacity: 0;
+            animation: fadeUp 1.2s ease .3s both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hdr-rule {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .rl {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .rd {
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            transform: rotate(45deg);
+            flex-shrink: 0;
+        }
+
+        .hdr-sub {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 200;
+            font-size: .62rem;
+            letter-spacing: .5em;
+            text-transform: uppercase;
+            color: rgba(200, 160, 80, .5);
+            margin-bottom: 8px;
+        }
+
+        .hdr-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            font-style: italic;
+            font-weight: 300;
+            color: var(--parch);
+            line-height: 1.1;
+        }
+
+        .hdr-title span {
+            color: var(--gold2);
+        }
+
+        .hdr-body {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: .95rem;
+            font-weight: 300;
+            color: rgba(200, 180, 140, .6);
+            margin-top: 8px;
+            letter-spacing: .08em;
+        }
+
+        /* gifts grid */
+        .gifts-row {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            gap: 36px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .gift-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            opacity: 0;
+            animation: giftIn 1s cubic-bezier(0.22, 1, 0.36, 1) var(--gd, .5s) both;
+        }
+
+        @keyframes giftIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .gift-box-wrap {
+            width: 160px;
+            height: 190px;
+            cursor: pointer;
+            position: relative;
+            animation: giftFloat var(--gf, 3s) ease-in-out infinite alternate;
+            filter: drop-shadow(0 8px 28px rgba(160, 120, 48, 0.2));
+            transition: filter .3s;
+        }
+
+        .gift-box-wrap:hover {
+            filter: drop-shadow(0 14px 40px rgba(160, 120, 48, 0.45));
+        }
+
+        @keyframes giftFloat {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-10px);
+            }
+        }
+
+        .gift-box-wrap:active {
+            transform: scale(.96);
+        }
+
+        .gift-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: .75rem;
+            font-style: italic;
+            color: rgba(200, 160, 80, .5);
+            letter-spacing: .25em;
+            text-transform: uppercase;
+        }
+
+        /* particle burst */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+            animation: burst var(--t, .8s) ease both;
+        }
+
+        @keyframes burst {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* overlay */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--dark);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .7s ease;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .ovl-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 5vw, 2rem);
+            font-style: italic;
+            color: var(--gold2);
+            text-align: center;
+            letter-spacing: .08em;
+        }
+
+        .ovl-sub {
+            font-size: .6rem;
+            letter-spacing: .5em;
+            color: rgba(160, 120, 48, .45);
+            font-style: normal;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-glow"></div>
+    <div id="motes"></div>
+
+    <div class="page-hdr">
+        <div class="hdr-rule">
+            <div class="rl"></div>
+            <div class="rd"></div>
+            <div class="rl"></div>
+        </div>
+        <div class="hdr-sub">Three gifts prepared for you</div>
+        <div class="hdr-title">Your <span>Gifts</span> Await</div>
+        <div class="hdr-body">Select a gift to unwrap your surprise</div>
+    </div>
+
+    <div class="gifts-row">
+
+        <!-- Gift 1 — Cake -->
+        <div class="gift-item" style="--gd:.5s">
+            <div class="gift-box-wrap" style="--gf:3.2s" onclick="openGift(1,'gift1.html')" id="g1">
+                <svg viewBox="0 0 160 190" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                    <defs>
+                        <linearGradient id="gb1" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#d4c5a0" />
+                            <stop offset="100%" stop-color="#8a6520" />
+                        </linearGradient>
+                        <linearGradient id="gl1" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stop-color="#f2e8d5" />
+                            <stop offset="100%" stop-color="#c8a050" />
+                        </linearGradient>
+                    </defs>
+                    <!-- shadow -->
+                    <ellipse cx="80" cy="184" rx="52" ry="6" fill="rgba(0,0,0,0.35)" />
+                    <!-- box body -->
+                    <rect x="22" y="96" width="116" height="82" rx="3" fill="url(#gb1)" />
+                    <!-- box body shading -->
+                    <rect x="22" y="96" width="116" height="82" rx="3" fill="rgba(0,0,0,0.08)" />
+                    <rect x="22" y="96" width="30" height="82" rx="3" fill="rgba(0,0,0,0.06)" />
+                    <!-- lid -->
+                    <rect x="16" y="78" width="128" height="24" rx="3" fill="#a07830" />
+                    <rect x="16" y="78" width="128" height="24" rx="3" fill="rgba(255,255,255,0.06)" />
+                    <!-- ribbon vertical -->
+                    <rect x="73" y="78" width="14" height="100" rx="2" fill="url(#gl1)" opacity=".9" />
+                    <!-- ribbon horizontal -->
+                    <rect x="16" y="84" width="128" height="12" rx="2" fill="url(#gl1)" opacity=".9" />
+                    <!-- bow left -->
+                    <ellipse cx="56" cy="70" rx="22" ry="13" fill="#c8a050" transform="rotate(-18,56,70)"
+                        opacity=".95" />
+                    <ellipse cx="56" cy="70" rx="14" ry="8" fill="#e8c870" transform="rotate(-18,56,70)" opacity=".4" />
+                    <!-- bow right -->
+                    <ellipse cx="104" cy="70" rx="22" ry="13" fill="#a07830" transform="rotate(18,104,70)"
+                        opacity=".95" />
+                    <ellipse cx="104" cy="70" rx="14" ry="8" fill="#c8a050" transform="rotate(18,104,70)"
+                        opacity=".4" />
+                    <!-- bow centre -->
+                    <circle cx="80" cy="72" r="10" fill="#c8a050" />
+                    <circle cx="80" cy="72" r="5" fill="#e8d8a0" />
+                    <!-- ornament dots on box -->
+                    <circle cx="45" cy="130" r="2.5" fill="rgba(200,160,80,0.35)" />
+                    <circle cx="80" cy="140" r="2" fill="rgba(200,160,80,0.25)" />
+                    <circle cx="115" cy="125" r="2.5" fill="rgba(200,160,80,0.3)" />
+                    <!-- engraved diamond -->
+                    <rect x="68" y="106" width="24" height="24" rx="1" fill="none" stroke="rgba(200,160,80,0.3)"
+                        stroke-width="0.7" transform="rotate(45,80,118)" />
+                </svg>
+            </div>
+            <div class="gift-label">I</div>
+        </div>
+
+        <!-- Gift 2 — Letter -->
+        <div class="gift-item" style="--gd:.75s">
+            <div class="gift-box-wrap" style="--gf:2.8s;height:200px" onclick="openGift(2,'gift2.html')" id="g2">
+                <svg viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                    <defs>
+                        <linearGradient id="gb2" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#c8b89e" />
+                            <stop offset="100%" stop-color="#6a4e28" />
+                        </linearGradient>
+                        <linearGradient id="gl2" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stop-color="#7a1c1c" />
+                            <stop offset="100%" stop-color="#b03030" />
+                        </linearGradient>
+                    </defs>
+                    <ellipse cx="80" cy="194" rx="52" ry="6" fill="rgba(0,0,0,0.35)" />
+                    <rect x="22" y="102" width="116" height="86" rx="3" fill="url(#gb2)" />
+                    <rect x="22" y="102" width="116" height="86" rx="3" fill="rgba(0,0,0,0.06)" />
+                    <rect x="16" y="84" width="128" height="24" rx="3" fill="#8b6340" />
+                    <rect x="73" y="84" width="14" height="104" rx="2" fill="url(#gl2)" opacity=".85" />
+                    <rect x="16" y="90" width="128" height="12" rx="2" fill="url(#gl2)" opacity=".85" />
+                    <ellipse cx="56" cy="76" rx="22" ry="13" fill="#7a1c1c" transform="rotate(-18,56,76)"
+                        opacity=".9" />
+                    <ellipse cx="104" cy="76" rx="22" ry="13" fill="#b03030" transform="rotate(18,104,76)"
+                        opacity=".9" />
+                    <circle cx="80" cy="78" r="10" fill="#7a1c1c" />
+                    <circle cx="80" cy="78" r="5" fill="#c04040" />
+                    <!-- wax seal hint on face -->
+                    <circle cx="80" cy="148" r="12" fill="rgba(122,28,28,0.25)" stroke="rgba(122,28,28,0.4)"
+                        stroke-width="0.8" />
+                    <text x="76" y="153" font-family="serif" font-size="10" font-style="italic"
+                        fill="rgba(122,28,28,0.6)">L</text>
+                    <circle cx="45" cy="120" r="2" fill="rgba(200,160,80,0.25)" />
+                    <circle cx="115" cy="135" r="2" fill="rgba(200,160,80,0.25)" />
+                </svg>
+            </div>
+            <div class="gift-label">II</div>
+        </div>
+
+        <!-- Gift 3 — Memories -->
+        <div class="gift-item" style="--gd:1s">
+            <div class="gift-box-wrap" style="--gf:3.5s" onclick="openGift(3,'gift3.html')" id="g3">
+                <svg viewBox="0 0 160 190" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                    <defs>
+                        <linearGradient id="gb3" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#b8a880" />
+                            <stop offset="100%" stop-color="#5a4820" />
+                        </linearGradient>
+                        <linearGradient id="gl3" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stop-color="#e8dbc2" />
+                            <stop offset="100%" stop-color="#a07830" />
+                        </linearGradient>
+                    </defs>
+                    <ellipse cx="80" cy="184" rx="52" ry="6" fill="rgba(0,0,0,0.35)" />
+                    <rect x="22" y="96" width="116" height="82" rx="3" fill="url(#gb3)" />
+                    <rect x="22" y="96" width="116" height="82" rx="3" fill="rgba(0,0,0,0.06)" />
+                    <rect x="16" y="78" width="128" height="24" rx="3" fill="#7a6030" />
+                    <rect x="73" y="78" width="14" height="100" rx="2" fill="url(#gl3)" opacity=".9" />
+                    <rect x="16" y="84" width="128" height="12" rx="2" fill="url(#gl3)" opacity=".9" />
+                    <ellipse cx="56" cy="70" rx="22" ry="13" fill="#c8a050" transform="rotate(-18,56,70)"
+                        opacity=".9" />
+                    <ellipse cx="104" cy="70" rx="22" ry="13" fill="#a07830" transform="rotate(18,104,70)"
+                        opacity=".9" />
+                    <circle cx="80" cy="72" r="10" fill="#c8a050" />
+                    <circle cx="80" cy="72" r="5" fill="#f0dfa0" />
+                    <!-- photo frame hint -->
+                    <rect x="52" y="110" width="56" height="44" rx="2" fill="rgba(200,180,120,0.12)"
+                        stroke="rgba(200,160,80,0.3)" stroke-width="0.8" />
+                    <rect x="56" y="114" width="48" height="36" rx="1" fill="rgba(200,180,120,0.08)" />
+                    <circle cx="80" cy="133" r="8" fill="rgba(200,160,80,0.15)" stroke="rgba(200,160,80,0.25)"
+                        stroke-width="0.6" />
+                </svg>
+            </div>
+            <div class="gift-label">III</div>
+        </div>
+
+    </div>
+
+    <div class="overlay" id="overlay">
+        <div class="ovl-text">
+            <div class="ovl-sub">unwrapping</div>
+            Opening your gift…
+        </div>
+    </div>
+
+    <script>
+        const mc = document.getElementById('motes');
+        for (let i = 0; i < 22; i++) { const m = document.createElement('div'); m.className = 'mote'; const sz = (Math.random() * 2.5 + 1).toFixed(1); m.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random() * 100}%;top:${Math.random() * 100}%;--md:${(Math.random() * 14 + 12).toFixed(1)}s;--ml:${(Math.random() * 10).toFixed(1)}s;--mo:${(Math.random() * 0.18 + 0.05).toFixed(2)};--mx:${(Math.random() * 40 - 20).toFixed(0)}px;--my:${(Math.random() * -40 - 10).toFixed(0)}px;`; mc.appendChild(m); }
+
+        function openGift(num, dest) {
+            const box = document.getElementById('g' + num);
+            if (box.dataset.opened) return;
+            box.dataset.opened = '1';
+            // gold particle burst
+            const rect = box.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
+            const cols = ['#c8a050', '#e8d8a0', '#a07830', '#f2e8d5', 'rgba(122,28,28,0.8)'];
+            for (let i = 0; i < 28; i++) {
+                const p = document.createElement('div'); p.className = 'particle';
+                const ang = Math.random() * 360, dist = Math.random() * 110 + 40;
+                const tx = Math.cos(ang * Math.PI / 180) * dist + 'px';
+                const ty = Math.sin(ang * Math.PI / 180) * dist + 'px';
+                const sz = Math.random() * 8 + 3;
+                p.style.cssText = `width:${sz}px;height:${sz}px;background:${cols[Math.floor(Math.random() * cols.length)]};left:${cx}px;top:${cy}px;--tx:${tx};--ty:${ty};--t:${(Math.random() * .4 + .5).toFixed(2)}s;`;
+                document.body.appendChild(p); setTimeout(() => p.remove(), 900);
+            }
+            setTimeout(() => {
+                document.getElementById('overlay').classList.add('show');
+                setTimeout(() => window.location.href = dest, 900);
+            }, 300);
+        }
+    </script>
+</body>
+
+</html>
